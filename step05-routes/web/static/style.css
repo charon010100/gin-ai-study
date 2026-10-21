@@ -1,0 +1,37 @@
+/* 故意写得很短：本步的重点是路由，不是 CSS。 */
+:root {
+    --fg: #1a1a1a;
+    --muted: #6b7280;
+    --line: #e5e7eb;
+    --accent: #2563eb;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0 auto;
+    max-width: 720px;
+    padding: 2rem 1.25rem 4rem;
+    font: 16px/1.7 -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif;
+    color: var(--fg);
+}
+
+header h1 { margin: 0 0 .25rem; font-size: 1.75rem; }
+header .sub { margin: 0 0 2rem; color: var(--muted); }
+
+.posts { list-style: none; padding: 0; }
+.posts li {
+    padding: .9rem 0;
+    border-bottom: 1px solid var(--line);
+}
+.posts a { color: var(--accent); text-decoration: none; }
+.posts a:hover { text-decoration: underline; }
+.posts .meta { display: block; font-size: .875rem; color: var(--muted); }
+.posts .empty { color: var(--muted); }
+
+footer { margin-top: 3rem; font-size: .875rem; color: var(--muted); }
+code {
+    background: #f3f4f6;
+    padding: .1rem .35rem;
+    border-radius: 4px;
+}

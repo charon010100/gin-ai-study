@@ -1,0 +1,7 @@
+[server]
+addr            = ":8080"
+mode            = "debug"
+readTimeout     = 15
+writeTimeout    = 30
+idleTimeout     = 60
+shutdownTimeout = 15

@@ -1,0 +1,20 @@
+# 服务配置
+# 复制成 config.toml 后修改；或者完全不用它，靠环境变量覆盖（见 internal/config/config.go）
+
+[server]
+# 监听地址。":8080" 表示所有网卡；"127.0.0.1:8080" 则只有本机能访问。
+addr = ":8080"
+
+# gin 的运行模式：debug / release。
+# 生产必须是 release：debug 会打印完整路由表，且每次请求多一层检查。
+mode = "debug"
+
+# 四个超时的单位都是秒。它们不是"可选的优化"，是防止连接被长期占用的必需品，
+# 具体各自防什么见 NOTES.md。
+readTimeout       = 15
+readTimeoutHeader = 5
+writeTimeout      = 30
+idleTimeout       = 60
+
+# 收到信号后，等待在途请求完成的最长时间。
+shutdownTimeout = 15

@@ -1,0 +1,70 @@
+# 示例配置文件（不会被镜像收录，也不会被默认加载）
+#
+# ── 这个文件有什么用 ──
+#
+# 应用默认只读环境变量。只有当环境变量 CONFIG_FILE 指向某个文件时，
+# 才会读取 YAML，并且优先级是：
+#
+#   代码里的默认值  <  CONFIG_FILE 指定的文件  <  环境变量
+#
+# 所以这个文件的价值是「文档 + 可选」：它列出了全部可配置项及其含义，
+# 需要复杂配置时挂载一份进去即可，敏感值仍然用环境变量覆盖。
+#
+# ── 为什么不能把它打进镜像 ──
+#
+# 1. 改一个值就要重新构建、重新推送、重新发布镜像。而 12-factor 应用的原则是
+#    「配置随环境变化，构建产物不变」—— 同一个镜像应该能在 dev/staging/prod 跑。
+# 2. 配置文件一旦进了镜像层，任何人 docker inspect / docker history 都可能看到它，
+#    包括里面的密码。需要轮换密码时，旧密码永久留在镜像里。
+# 3. 出问题时无法确认「线上这个容器到底用的哪份配置」，因为它固化在镜像里，
+#    而不是在部署配置（compose / K8s manifest / secret）里可审计。
+#
+# 正确做法：密码类走 secret（K8s Secret / docker secret / 云平台参数仓库），
+# 注入方式为环境变量或只读文件挂载；镜像里永远只有默认值和示例。
+
+app:
+  # dev / test / prod。prod 会启用 gin ReleaseMode、JSON 日志、空密码校验
+  env: prod
+  # 监听地址。容器里必须是 :8080（0.0.0.0），写成 127.0.0.1:8080 会导致
+  # 从容器外（包括 docker 的端口映射）访问不到
+  addr: ":8080"
+  # 优雅关停等待秒数。必须小于编排系统的 stop 超时（Docker 默认 10 秒，
+  # K8s 默认 30 秒），否则还没等你关停完就被 SIGKILL 了
+  shutdown_timeout: 15
+
+mysql:
+  # 容器网络里用服务名，不是 localhost —— 每个容器有自己的 localhost
+  host: mysql
+  port: 3306
+  user: blog
+  # 密码不要写在这里！用 MYSQL_PASSWORD 环境变量或 secret 注入
+  password: ""
+  database: blog
+
+redis:
+  addr: redis:6379
+  password: ""
+  db: 0
+
+log:
+  # debug / info / warn / error
+  level: info
+
+# ── 环境变量对照表 ──
+#
+# 下列变量会覆盖上面的同名项（实现见 internal/config/config.go 的 applyEnv）：
+#
+#   CONFIG_FILE     本文件的路径（不设则不读文件）
+#   APP_ENV         app.env
+#   APP_ADDR        app.addr
+#   SHUTDOWN_TIMEOUT app.shutdown_timeout（秒，整数）
+#   MYSQL_HOST      mysql.host
+#   MYSQL_PORT      mysql.port
+#   MYSQL_USER      mysql.user
+#   MYSQL_PASSWORD  mysql.password   ← 敏感，只走环境变量/secret
+#   MYSQL_DATABASE  mysql.database
+#   REDIS_ADDR      redis.addr
+#   REDIS_PASSWORD  redis.password   ← 敏感
+#   REDIS_DB        redis.db
+#   LOG_LEVEL       log.level
+#   GIN_MODE        gin 自己的模式开关（release/debug/test），与本文件的 app.env 独立

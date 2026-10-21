@@ -1,0 +1,16 @@
+[server]
+addr            = ":8080"
+mode            = "debug"
+readTimeout     = 15
+writeTimeout    = 30
+idleTimeout     = 60
+shutdownTimeout = 15
+
+# 本服务是否位于可信反向代理之后。
+# 本地直接访问时必须是 false，否则客户端可以伪造 IP 绕过限流。
+trustProxy = false
+
+[cors]
+# 允许的来源白名单。
+# "*" 只适合本地联调；生产必须写具体域名，否则任何网站都能调你的接口。
+allowOrigins = ["*"]

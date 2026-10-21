@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ .Title }}</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header>
+    <p><a href="/">← 返回首页</a></p>
+    <h1>{{ .Post.Title }}</h1>
+    <p class="sub">{{ .Post.CreateAt }} · {{ .Post.Views }} 次阅读</p>
+</header>
+
+<main>
+    <p>{{ .Post.Summary }}</p>
+    <p class="sub">（正文略。本步的重点是路由，不是内容。）</p>
+</main>
+
+<footer>
+    <p>这个页面由服务端模板渲染，地址是 <code>/posts/{{ .Post.Slug }}</code>。</p>
+    <p>同一个资源的 JSON 版本：<code>/api/v1/posts/{{ .Post.Slug }}</code></p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ .Title }}</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header>
+    <h1>404</h1>
+    <p class="sub">这个页面不存在。</p>
+</header>
+<main>
+    <p><a href="/">回到首页</a></p>
+    <p class="sub">
+        注意：HTML 页面的 404 返回的是**页面**，不是 JSON。
+        而 API 的 404（<code>/api/v1/...</code>）返回的是 JSON。
+        两类路由的兜底处理必须分开做。
+    </p>
+</main>
+</body>
+</html>

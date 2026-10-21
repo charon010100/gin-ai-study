@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ .Title }}</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header>
+    <h1>{{ .Title }}</h1>
+    <p class="sub">{{ .Subtitle }}</p>
+</header>
+
+<main>
+    <ul class="posts">
+        {{ range .Posts }}
+        <li>
+            <a href="/posts/{{ .Slug }}">{{ .Title }}</a>
+            <span class="meta">{{ .CreateAt }} · {{ .Views }} 次阅读</span>
+        </li>
+        {{ else }}
+        <li class="empty">还没有文章</li>
+        {{ end }}
+    </ul>
+</main>
+
+<footer>
+    <p>这是 Step 5 的服务端渲染示例。JSON 接口在 <code>/api/v1/posts</code>。</p>
+</footer>
+</body>
+</html>
